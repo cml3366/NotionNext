@@ -97,6 +97,15 @@ describe('mapImgUrl 外链图片', () => {
     expect(ret).toContain('t=block-id-5')
   })
 
+  it('自有域名的封面图直出，不走 Notion /image/ 中转', () => {
+    const ownCover = 'https://www.cml3366.cn/images/qwh/cover-fu.jpg'
+    const block = { type: 'page', id: 'page-id-2', format: { page_cover: ownCover } }
+    const ret = mapImgUrl(ownCover, block, 'collection', false)
+
+    expect(ret).not.toContain('/image/')
+    expect(ret.startsWith(ownCover)).toBe(true)
+  })
+
   describe('外链压缩参数（回归：代理前需先做源站压缩）', () => {
     const unsplashUrl = 'https://images.unsplash.com/photo-1234567890'
 
